@@ -1,0 +1,17 @@
+{
+  "author": {
+    "name": "Daniel López",
+    "email": "danypype@gmail.com"
+  },
+  "name": "tools",
+  "description": "Useful set of tools to use in application development",
+  "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/alltherooms/tools.git"
+  },
+  "main": "./tools",
+  "dependencies": {
+    "ftp": "0.3.6"
+  }
+}
