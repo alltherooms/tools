@@ -17,6 +17,7 @@ usage:
   csvParser.on('object', function (object, next) {
     //Process object
     next();//Parse next object
+    //Optionally call next(error); to end stream sending the error
   })
 
   csvParser.on('error', function (error) {
@@ -139,7 +140,8 @@ CSVParser.prototype.method_name = function() {
               setKey(self.map, object, keys[i]);
             };
 
-            self.emit("object", object, function (){
+            self.emit("object", object, function (error){
+              if (error) return this.end(error);
               readNextLine();
             });
           };
