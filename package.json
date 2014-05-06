@@ -12,6 +12,7 @@
   },
   "main": "./tools",
   "dependencies": {
-    "ftp": "0.3.6"
+    "ftp": "0.3.6",
+    "line-reader": "0.2.3"
   }
 }

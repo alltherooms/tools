@@ -17,6 +17,7 @@ usage:
   });
 */
 
+module.exports = FTPDownloader;
 
 var utils = require('./utils');
 var fs = require('fs');
@@ -161,5 +162,3 @@ FTPDownloader.prototype.downloadFiles = function (callback) {
     this.ftpClient.on('error', callback);
     this.ftpClient.connect(this.options.connect);
 };
-
-module.exports = FTPDownloader;
