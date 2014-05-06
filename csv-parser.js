@@ -36,17 +36,21 @@ usage:
 
   //Mapping example
   {
-    id: "HotelId" //Matches the field "HotelId"
-    name: /HotelName/ //Matches any field containing "HotelName"
-    checkIn: (fields) -> //Gets al fields as argument, and returns the field that best matches; in this case, the "CheckInHour" field
-      return filed if field is "CheckInHour"
+    id: "HotelId", //Matches the field "HotelId"
+    name: /HotelName/, //Matches any field containing "HotelName"
+    checkIn: function (fields) { //Gets al fields as argument, and returns the field that best matches; in this case, the "CheckInHour" field
+      for (var i = 0; i < fields.length; i++) {
+        if (fields[i] is "CheckInHour") return fields[i];
+      };
+    },
     location: [
       "Longitude", //Sets object.location[0] to the value of "Longitude",
       "Latitude" //and object.location[1] to the value of "Latitude"
-    ]
-    address:
-      city: "AddressCity" //Sets object.address.city to the value of "AddressCity",
-      zip: "AddressZip"   //and object.address.zip to the value of "AddressZip"
+    ],
+    address: {
+      city: "AddressCity", //Sets object.address.city to the value of "AddressCity",
+      zip: "AddressZip" //and object.address.zip to the value of "AddressZip"
+    }
   }
 */
 
