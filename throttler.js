@@ -120,7 +120,7 @@ Throttler.prototype.run = function () {
       };
     };
   } else if (this.queue.length && this.executing < this.concurrency) {
-    while (this.queue.length && this.model.executing < this.concurrency) {
+    while (this.queue.length && this.executing < this.concurrency) {
       this.executing++;
       var fn = this.queue.shift();
       if (typeof fn == "function") fn(_next);
