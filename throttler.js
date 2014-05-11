@@ -57,7 +57,7 @@ Throttler.prototype._isTimed = function () {
 };
 
 Throttler.prototype._validate = function (first_argument) {
-  if (this.isTimed() && this.concurrency < this.executionsPerRound) {
+  if (this._isTimed() && this.concurrency < this.executionsPerRound) {
     return this.emit("error", new Error("concurrency: " + htis.concurrency +
       " can't be greater than executionsPerRound: " + thisexecutionsPerRound));
   };
