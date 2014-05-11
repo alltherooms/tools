@@ -36,3 +36,8 @@ See: `tools/ftp-downloader.js` for usage and documentation.
 Get's a csv file path and a mapping object, then emits an object for each line of the file with the format specified in the mapping.<br/>
 Available at: `tools.CSVParser`<br/>
 See: `tools/csv-parser.js` for usage and documentation.
+
+###Throttler
+Throttles the execution of a set of given functions based on concurrency and exectutions/time restrictions.
+Available at: `tools.Throttler`
+See: `tools/throttler` for usage and documentation.
