@@ -50,6 +50,7 @@ function Throttler (concurrency, executionsPerRound, roundMinutes) {
   this.nextRoundInterval = null;
   this.round = 0;
   this.executing = 0;
+  this.executed = 0;
 };
 
 Throttler.prototype._isTimed = function () {
