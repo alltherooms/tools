@@ -86,7 +86,7 @@ Throttler.prototype.run = function () {
 
   function _next (error) {
     if (error) return self.emit("error", error);
-    if (--self.executing == 0 && this.queue.length == 0) {
+    if (--self.executing == 0 && self.queue.length == 0) {
       self.emit("finish");
     } else {
       self.run();
