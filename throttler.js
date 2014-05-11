@@ -64,7 +64,7 @@ Throttler.prototype._validate = function (first_argument) {
   };
 };
 
-Throttler.prototype._isTimeForNextRound = function(first_argument) {
+Throttler.prototype._isTimeForNextRound = function () {
   if (this.round == 0) return true;
   var now = new Date();
   return (now - this.startedAt) / 100 / 60 >= this.roundMinutes;
@@ -105,15 +105,15 @@ Throttler.prototype.run = function () {
         };
       } else if (this.executed < (this.round + 1) * this.executionsPerRound && !this.nextRoundInterval) {
         this.nextRoundInterval = this.setIntervalAndExecute(function () {
-          if (this._isTimeForNextRound()){
+          if (self._isTimeForNextRound()){
             clearInterval(this.nextRoundInterval);
-            this.nextRoundInterval = null;
-            this.round++;
-            this.startedAt = new Date();
-            while (this.queue.length && this.executing < this.concurrency && this.executed < this.round * this.executionsPerRound) {
-              this.executing++;
-              this.executed++;
-              var fn = this.queue.shift()
+            self.nextRoundInterval = null;
+            self.round++;
+            self.startedAt = new Date();
+            while (self.queue.length && self.executing < self.concurrency && self.executed < self.round * self.executionsPerRound) {
+              self.executing++;
+              self.executed++;
+              var fn = self.queue.shift()
               if (typeof fn == "function") fn(_next);
             };
           };
