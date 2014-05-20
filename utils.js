@@ -1,14 +1,5 @@
 module.exports = {
   /*
-  Extends the given objects
-  */
-  extend: function (a, b) {
-    for (var x in b) {
-      a[x] = b[x];
-    };
-  },
-
-  /*
   Usage:
   var array = [1, 2, 3, 4, 5];
   forEachAsync(
