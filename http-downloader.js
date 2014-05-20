@@ -25,7 +25,7 @@
 
 module.exports = HTTPDownloader
 
-var Downloader = require("downloader")
+var Downloader = require("./downloader")
 ,   util = require('util')
 ,   exec = require('child_process').exec;
 
