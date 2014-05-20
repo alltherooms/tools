@@ -57,11 +57,11 @@ usage:
 
 module.exports = CSVParser;
 
-var utils = require("./utils");
-var EventEmitter = require("events").EventEmitter;
-var lineReader = require("line-reader");
-var fs = require("fs");
-var util = require("util");
+var EventEmitter = require("events").EventEmitter
+,   lineReader = require("line-reader")
+,   fs = require("fs")
+,   util = require("util");
+
 util.inherits(CSVParser, EventEmitter);
 
 function CSVParser (config, map) {
@@ -73,7 +73,7 @@ function CSVParser (config, map) {
     wrapper: null
   };
 
-  utils.extend(this.config, config);
+  util._extend(this.config, config);
 
   if (this.config.wrapper) this.wrapperRegExp = new RegExp(this.config.wrapper, "g");
   if (!map) throw new Error("map cant be undefined");

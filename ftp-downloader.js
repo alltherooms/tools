@@ -19,9 +19,9 @@ usage:
 
 module.exports = FTPDownloader;
 
-var utils = require('./utils');
-var fs = require('fs');
-var FTPClient = require('ftp');
+var util = require('util')
+,   fs = require('fs')
+,   FTPClient = require('ftp');
 
 function FTPDownloader (options) {
   this.options = {
@@ -30,7 +30,7 @@ function FTPDownloader (options) {
     destinationPath: 'donwloads/'
   };
 
-  utils.extend(this.options, options);
+  util._extend(this.options, options);
 
   if (!this.options.connect.host) throw new Error("A host must be specified in the 'connect' option");
   if (!this.options.files.length) throw new Error("'files' can't be an empty array");
