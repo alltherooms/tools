@@ -19,7 +19,8 @@ usage:
 
 module.exports = FTPDownloader;
 
-var util = require('util')
+var utils = require('./utils')
+,   util = require('util')
 ,   fs = require('fs')
 ,   FTPClient = require('ftp');
 
