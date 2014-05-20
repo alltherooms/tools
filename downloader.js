@@ -1,6 +1,6 @@
 module.exports = Downloader
 
-var utils = require('./utils');
+var util = require('util');
 var fs = require('fs');
 
 function Downloader (options) {
@@ -10,7 +10,7 @@ function Downloader (options) {
     destinationPath: 'donwloads/'
   };
 
-  utils.extend(this.options, options);
+  util._extend(this.options, options);
 
   if (!this.options.connect.host) throw new Error("A host must be specified in the 'connect' option");
   if (!this.options.files.length) throw new Error("'files' can't be an empty array");
