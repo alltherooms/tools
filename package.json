@@ -14,5 +14,10 @@
   "dependencies": {
     "ftp": "0.3.6",
     "line-reader": "0.2.3"
+  },
+  "devDependencies": {
+    "chai": "^1.9.1",
+    "grunt": "~0.4.4",
+    "grunt-mocha-test": "^0.10.2"
   }
 }
