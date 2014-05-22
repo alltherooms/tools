@@ -77,9 +77,11 @@ function CSVParser (config, map) {
 
   if (this.config.wrapper) this.wrapperRegExp = new RegExp(this.config.wrapper, "g");
   if (!map) throw new Error("map cant be undefined");
+
+  this.map = map;
 };
 
-CSVParser.prototype.method_name = function() {
+CSVParser.prototype.start = function() {
   var self = this;
   if (!fs.existsSync(this.config.sourceFilePath))
     return this.emit("error", new Error("Unable to open file: " + this.config.sourceFilePath + ". It doesn't exist."))
@@ -95,31 +97,29 @@ CSVParser.prototype.method_name = function() {
           if (!fields) {
             fields = line.split(self.config.separator);
             for (var i = 0; i < fields.length; i++) {
-              fields[i] = field.trim()
-              if (wrapperRegExp) fields[i] = fields[i].replace(this.wrapperRegExp, "");
+              fields[i] = fields[i].trim();
+              if (self.wrapperRegExp) fields[i] = fields[i].replace(self.wrapperRegExp, "");
             };
             readNextLine();
           } else {
             var object = {};
-            var cols = line.split(this.config.separator);
+            var cols = line.split(self.config.separator);
             for (var i = 0; i < cols.length; i++) {
-              cols[i] = col.trim()
-              if (this.wrapperRegExp) cols[i] = cols[i].replace(this.wrapperRegExp, "");
+              cols[i] = cols[i].trim();
+              if (self.wrapperRegExp) cols[i] = cols[i].replace(self.wrapperRegExp, "");
             };
 
             function setKey (map, object, key) {
               var matcher = map[key];
               var _field = null;
 
-              if (typeof matcher == "object" && !(matcher instanceof RegExp))
+              if (typeof matcher == "object" && !(matcher instanceof RegExp)) {
                 object[key] = Array.isArray(matcher) ? [] : {};
                 var _keys = Object.keys(matcher);
                 for (var i = 0; i < _keys.length; i++) {
                   setKey(matcher, object[key], _keys[i]);
                 };
-                return;
-
-              if (typeof matcher == "string") {
+              } else if (typeof matcher == "string") {
                 _field = matcher;
               } else if (typeof matcher == "function") {
                 _field = matcher(fields);
@@ -141,7 +141,7 @@ CSVParser.prototype.method_name = function() {
             };
 
             self.emit("object", object, function (error){
-              if (error) return this.end(error);
+              if (error) return self.end(error);
               readNextLine();
             });
           };

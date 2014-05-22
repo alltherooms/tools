@@ -1,5 +1,5 @@
-var HTTPDownloader = require("../http-downloader")
-,   Downloader = require("../downloader");
+var HTTPDownloader = require("../../http-downloader")
+,   Downloader = require("../../downloader");
 
 describe("HTTPDownloader", function () {
   describe("#constructor", function () {

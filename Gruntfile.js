@@ -5,9 +5,11 @@ module.exports = function (grunt) {
     mochaTest: {
       options: {
         reporter: "spec",
-        require: "./tests/support"
+        require: "./test/support"
       },
-      all: {src: ["./tests/http-downloader.js"]}
+      all: {src: ["./test/**/*.js"]},
+      HttpDownloader: {src: "./test/http-downloader/test.js"},
+      CSVParser: {src: "./test/csv-parser/test.js"}
     }
   });
 

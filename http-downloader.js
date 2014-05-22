@@ -29,11 +29,11 @@ var Downloader = require("./downloader")
 ,   util = require('util')
 ,   exec = require('child_process').exec;
 
+util.inherits(HTTPDownloader, Downloader);
+
 function HTTPDownloader (options) {
   Downloader.apply(this, Array.prototype.slice.call(arguments));
-}
-
-util.inherits(HTTPDownloader, Downloader);
+};
 
 HTTPDownloader.prototype.downloadFiles = function (callback) {
   var options = this.options;
