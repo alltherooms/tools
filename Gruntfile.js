@@ -9,7 +9,8 @@ module.exports = function (grunt) {
       },
       all: {src: ["./test/**/*.js"]},
       HttpDownloader: {src: "./test/http-downloader/test.js"},
-      CSVParser: {src: "./test/csv-parser/test.js"}
+      CSVParser: {src: "./test/csv-parser/test.js"},
+      geo: {src: "./test/geo/test.js"}
     }
   });
 
