@@ -2,6 +2,8 @@ var geo = require("../../geo");
 
 describe("geo", function () {
 
+  var latLngBounds, box, sw, ne;
+
   describe("#degreesToRadians", function () {
     it("behaves well given 0 radians", function () {
       expect(geo.degreesToRadians(0)).to.equal(0);
@@ -22,5 +24,79 @@ describe("geo", function () {
     });
   });
 
-  //TODO: Complete...
+  describe("#getSegmentMiddlePoint", function () {
+    it("returns the middle point of the given segment A-B", function () {
+      expect(geo.getSegmentMiddlePoint([0, 1], [10, 20])).to.deep.equal([5, 10.5]);
+    });
+  });
+
+  describe("#getLatLngBounds", function () {
+    it("returns the latitude longitude bounds, given a point and it's distance in miles to any corner", function () {
+      latLngBounds = geo.getLatLngBounds([-73.9780035, 40.7056308], 10);
+      expect(latLngBounds).to.deep.equal({
+        neLat: 40.80794693097765,
+        neLng: -73.87568736902234,
+        nwLat: 40.80794693097765,
+        nwLng: -74.08031963097766,
+        seLat: 40.60331466902235,
+        seLng: -73.87568736902234,
+        swLat: 40.60331466902235,
+        swLng: -74.08031963097766
+      });
+    });
+  });
+
+  describe("#buildBox", function () {
+    it("returns a mongodb-ready polygon given a set of latLngBounds", function () {
+      box = geo.buildBox(latLngBounds);
+      expect(box).to.deep.equal([[
+        [-74.08031963097766, 40.80794693097765],
+        [-73.87568736902234, 40.80794693097765],
+        [-73.87568736902234, 40.60331466902235],
+        [-74.08031963097766, 40.60331466902235],
+        [-74.08031963097766, 40.80794693097765]
+      ]]);
+    });
+  });
+
+  describe("#getGridBoxCenter", function () {
+    it("returns the center point of the given box", function () {
+      expect(geo.getGridBoxCenter(box)).to.deep.equal([-73.9780035, 40.7056308]);
+    });
+  });
+
+  describe("#isPointInsideBox", function () {
+    it("returns true given a point inside the box", function () {
+      expect(geo.isPointInsideBox([-74, 40.7], box)).to.be.true;
+    });
+    it("returns false given a point otuside the box", function () {
+      expect(geo.isPointInsideBox([-73, 40], box)).to.be.false;
+    });
+  });
+
+  describe("#getGridBoxes", function () {
+    it("returns the grid boxes of the given wrapper box (sw and ne coordinates)", function () {
+      sw = [latLngBounds.swLng, latLngBounds.swLat];
+      ne = [latLngBounds.neLng, latLngBounds.neLat];
+      expect(geo.getGridBoxes(sw, ne, 0.1, 0.1)[0]).to.deep.equal([[
+        [-74.08031963097766,40.7056308],
+        [-73.9780035, 40.7056308],
+        [-73.9780035, 40.60331466902235],
+        [-74.08031963097766, 40.60331466902235],
+        [-74.08031963097766, 40.7056308]
+      ]]);
+    });
+  });
+
+  describe("#getBox", function () {
+    it("returns a mongodb-ready polygon, given a a pair of sw and ne coordiantes", function () {
+      expect(geo.getBox(sw, ne)).to.deep.equal([[
+        [-74.08031963097766, 40.80794693097765],
+        [-73.87568736902234, 40.80794693097765],
+        [-73.87568736902234, 40.60331466902235],
+        [-74.08031963097766, 40.60331466902235],
+        [-74.08031963097766, 40.80794693097765]
+      ]]);
+    });
+  });
 });
