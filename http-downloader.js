@@ -38,12 +38,27 @@ function HTTPDownloader (options) {
 HTTPDownloader.prototype.downloadFiles = function (callback) {
   var options = this.options;
   var wgetOptions = [
-    " -r -np -nd",
+    " -r -np -nd -q",
     " -A " + options.files,
     " --http-user=" + options.connect.user,
     " --http-password=" + options.connect.password,
     " -P " + options.destinationPath
   ].join("");
 
-  exec("wget" + wgetOptions + " " + options.connect.host, callback);
+  var proc = exec("wget" + wgetOptions + " " + options.connect.host);
+  proc.on('close', function (code, signal) {
+    switch (code) {
+      case 0:
+      case 8: // 404 errors
+        callback();
+        break;
+      default:
+        var message = "Wget failed";
+        if (code) {
+          message += " with code " + code;
+        }
+        callback(new Error(message));
+    }
+  });
+
 };
