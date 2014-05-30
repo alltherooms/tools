@@ -17,6 +17,7 @@
   },
   "devDependencies": {
     "chai": "^1.9.1",
+    "chai-spies": "^0.5.1",
     "grunt": "~0.4.4",
     "grunt-mocha-test": "^0.10.2"
   }

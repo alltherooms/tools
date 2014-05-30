@@ -58,16 +58,16 @@ Throttler.prototype._isTimed = function () {
 };
 
 Throttler.prototype._validate = function (first_argument) {
-  if (this._isTimed() && this.concurrency < this.executionsPerRound) {
-    return this.emit("error", new Error("concurrency: " + htis.concurrency +
-      " can't be greater than executionsPerRound: " + thisexecutionsPerRound));
+  if (this._isTimed() && this.concurrency > this.executionsPerRound) {
+    return this.emit("error", new Error("concurrency: " + this.concurrency +
+      " can't be greater than executionsPerRound: " + this.executionsPerRound));
   };
 };
 
 Throttler.prototype._isTimeForNextRound = function () {
   if (this.round == 0) return true;
   var now = new Date();
-  return (now - this.startedAt) / 100 / 60 >= this.roundMinutes;
+  return (now - this.startedAt) / 1000 / 60 >= this.roundMinutes;
 };
 
 Throttler.prototype.setIntervalAndExecute = function(fn, ms) {
@@ -129,4 +129,4 @@ Throttler.prototype.run = function () {
   };
 };
 
-module.exports = Throttler
+module.exports = Throttler;
