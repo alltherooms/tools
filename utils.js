@@ -22,7 +22,7 @@ module.exports = {
     if (undefined === (item = array.shift())) return done();
     each(item, function (error) {
       if (error) return done(error);
-      self.forEachAsync(each, done);
+      self.forEachAsync(array, each, done);
     });
   }
 };

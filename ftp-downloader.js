@@ -48,23 +48,27 @@ function FTPDownloader (options) {
 Returns the fileName of a given filePath.
 this.getFileName('/path/to/file.txt') //returns 'file.txt'
 */
-FTPDownloader.prototype.getFileName = function(filePath) {
-  return filePath ? filepath.substring(filePath.lastIndexOf('/') + 1) : null;
+FTPDownloader.prototype.getFileName = function (filePath) {
+  return filePath ? filePath.substring(filePath.lastIndexOf('/') + 1) : null;
 };
 
 /*
 Returns a safe destination path for the given filePath
 */
 FTPDownloader.prototype.getSafeDestinationFilePath = function(filePath) {
-  var destinationFilePath;
-  var safeDestinationFilePath;
+  var fileName = this.getFileName(filePath)
+  ,   destinationFilePath
+  ,   safeDestinationFilePath;
 
-  destinationFilePath = safeDestinationFilePath = this.options.destinationPath + this.getFileName(filePath);
+  destinationFilePath = safeDestinationFilePath = this.options.destinationPath + fileName;
 
   var i = 1
   while (fs.existsSync(safeDestinationFilePath)) {
-    safeDestinationFilePath = destinationFilePath.substring(0, destinationFilePath.lastIndexOf(".")) + i +
-      destinationFilePath.substring(destinationFilePath.lastIndexOf("."));
+    if (fileName.lastIndexOf(".") >= 0) {
+      safeDestinationFilePath = destinationFilePath.substring(0, destinationFilePath.lastIndexOf(".")) + i + destinationFilePath.substring(destinationFilePath.lastIndexOf("."));
+    } else {
+      safeDestinationFilePath = destinationFilePath + i;
+    };
     i++;
   };
 
@@ -84,7 +88,6 @@ FTPDownloader.prototype.downloadFile = function(filePath, callback) {
       if (callback) callback(new Error("Unable to get file " + filePath + ". Internal server error"));
       return;
     };
-
     readStream.pipe(fs.createWriteStream(destinationFilePath));
     readStream.on('error', callback);
     readStream.on('end', callback);
