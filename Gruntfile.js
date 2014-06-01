@@ -1,5 +1,3 @@
-var fs = require('fs');
-
 module.exports = function (grunt) {
   grunt.initConfig({
     mochaTest: {
@@ -7,7 +5,6 @@ module.exports = function (grunt) {
         reporter: "spec",
         require: "./test/support"
       },
-      all: {src: ["./test/**/*.js"]},
       HttpDownloader: {src: "./test/http-downloader/test.js"},
       FTPDownloader: {src: "./test/ftp-downloader/test.js"},
       CSVParser: {src: "./test/csv-parser/test.js"},
