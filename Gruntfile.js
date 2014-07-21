@@ -9,7 +9,8 @@ module.exports = function (grunt) {
       FTPDownloader: {src: "./test/ftp-downloader/test.js"},
       CSVParser: {src: "./test/csv-parser/test.js"},
       geo: {src: "./test/geo/test.js"},
-      throttler: {src: "./test/throttler/test.js"}
+      Throttler: {src: "./test/throttler/test.js"},
+      SocketDataParser: {src: "./test/socket-data-parser/test.js"}
     }
   });
 

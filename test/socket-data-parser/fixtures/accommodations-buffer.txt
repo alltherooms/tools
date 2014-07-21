@@ -1,0 +1,1 @@
+>>>PEND<<<{"name": "Accommodation1"}>>>PEND<<<{"name": "Accommodation2"}>>>PEND<<<{"name": "Accommodation3"}>>>PEND<<<>>>PEND<<<{"name": "Accommodation4"}>>>PEND<<<>>>PEND<<<>>>PEND<<<>>>PEND<<<>>>PEND<<<>>>PEND<<<>>>PEND<<<>>>PEND<<<>>>PEND<<<

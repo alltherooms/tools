@@ -3,5 +3,6 @@ module.exports = {
   geo: require('./geo'),
   FTPDownloader: require('./ftp-downloader'),
   CSVParser: require('./csv-parser'),
-  Throttler: require('./throttler')
+  Throttler: require('./throttler'),
+  SocketDataParser: require('./socket-data-parser')
 };
