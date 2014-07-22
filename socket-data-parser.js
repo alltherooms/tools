@@ -1,6 +1,17 @@
 /*
 SocketDataParser Transform Stream
 Reads the socket input (buffer), and outputs javascript objects.
+
+usage:
+//...
+var net = require("net")
+,   SocketDataParser = require("tools/socket-data-parser")
+,   socket = net.connect({host: host, port: port});
+
+socket.pipe(new SocketDataParser()).on("data", function (object) {
+  //Handle object
+});
+//...
 */
 
 module.exports = AccommodationsParser;

@@ -40,7 +40,9 @@ See: `tools/csv-parser.js` for usage and documentation.
 ##Throttler
 Throttles the execution of a set of given functions based on concurrency and exectutions/time restrictions.
 Available at: `tools.Throttler`
-See: `tools/throttler` for usage and documentation.
+See: `tools/throttler.js` for usage and documentation.
 
 ##SocketDataParser
 Reads the socket input (buffer), and outputs javascript objects.
+Available at: `tools.SocketDataParser`
+See: `tools/socket-data-parser.js` for usage and documentation.
