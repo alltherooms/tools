@@ -37,7 +37,10 @@ Get's a csv file path and a mapping object, then emits an object for each line o
 Available at: `tools.CSVParser`<br/>
 See: `tools/csv-parser.js` for usage and documentation.
 
-###Throttler
+##Throttler
 Throttles the execution of a set of given functions based on concurrency and exectutions/time restrictions.
 Available at: `tools.Throttler`
 See: `tools/throttler` for usage and documentation.
+
+##SocketDataParser
+Reads the socket input (buffer), and outputs javascript objects.
