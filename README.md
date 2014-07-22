@@ -35,14 +35,14 @@ See: `ftp-downloader.js` for usage and documentation.
 ##CSVParser
 Get's a csv file path and a mapping object, then emits an object for each line of the file with the format specified in the mapping.<br/>
 Available at: `tools.CSVParser`<br/>
-See: `tools/csv-parser.js` for usage and documentation.
+See: `csv-parser.js` for usage and documentation.
 
 ##Throttler
 Throttles the execution of a set of given functions based on concurrency and exectutions/time restrictions.<br/>
 Available at: `tools.Throttler`<br/>
-See: `tools/throttler.js` for usage and documentation.
+See: `throttler.js` for usage and documentation.
 
 ##SocketDataParser
 Reads the socket input (buffer), and outputs javascript objects.<br/>
 Available at: `tools.SocketDataParser`<br/>
-See: `tools/socket-data-parser.js` for usage and documentation.
+See: `socket-data-parser.js` for usage and documentation.
