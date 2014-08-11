@@ -26,7 +26,7 @@ var utils = require('./utils')
 
 function FTPDownloader (options) {
   this.options = {
-    connect: {},
+    connect: {}, // use host without the protocol string
     files: [],
     destinationPath: 'donwloads/'
   };
