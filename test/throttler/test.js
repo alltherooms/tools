@@ -68,7 +68,7 @@ describe("throttler", function () {
       this.throttler.roundMinutes = 1 / 2 / 60; //half a second
     });
 
-    it("executes a maxmimum of 5 functions (4 concurrent) every 30 seconds", function (done) {
+    it("executes a maxmimum of 5 functions (4 concurrent) every 0.5 seconds", function (done) {
       var self = this;
       this.throttler.on("error", done);
       this.throttler.run();
