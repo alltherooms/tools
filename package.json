@@ -20,6 +20,7 @@
     "chai-spies": "^0.5.1",
     "execSync": "^1.0.1-pre",
     "grunt": "~0.4.4",
-    "grunt-mocha-test": "^0.10.2"
+    "grunt-mocha-test": "^0.10.2",
+    "ftp-test-server": "git+https://github.com/alexeld/ftp-test-server.git"
   }
 }

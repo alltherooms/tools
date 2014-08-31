@@ -77,6 +77,7 @@ FTPDownloader.prototype.getSafeDestinationFilePath = function(filePath) {
 
 FTPDownloader.prototype.downloadFile = function(filePath, callback) {
   var destinationFilePath = this.getSafeDestinationFilePath(filePath);
+
   this.ftpClient.get(filePath, function (error, readStream) {
     if (error) {
       if (error.message != "Unable to make data connection")
@@ -125,12 +126,12 @@ FTPDownloader.prototype.downloadFiles = function (callback) {
                 directory = directory + "/";
 
               self.ftpClient.list(directory, function (error, paths) {
-                if (!(paths && paths.length)) return;
+                if (!(paths && paths.length)) return nextFile();
                 utils.forEachAsync(
                   paths,
                   function (path, nextPath) {//For each path
                     if (path.type == "-") {//File
-                      var filePath = "#{directory}#{path.name}";
+                      var filePath = directory + path.name;
                       if (file.test(filePath)) {
                         self.downloadFile(filePath, function (error) {
                           nextPath(error);
@@ -142,12 +143,13 @@ FTPDownloader.prototype.downloadFiles = function (callback) {
                       if (path.name !== "." && path.name != "..") //Directory
                         allPaths.push(directory + path.name);
                       nextPath();
-                    };
+                    } else {
+                      nextPath();
+                    }
                   },
                   function (error) {//Done with paths
                     if (error) return handleError(error);
-                    if (allPaths.length) lookupFiles(allPaths[0]);
-                    else nextFile();
+                    allPaths.length ? lookupFiles(allPaths[0]) : nextFile();
                   }
                 );
               });

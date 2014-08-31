@@ -4,37 +4,93 @@ FTPDownloader test
 
 var sh = require("execSync")
 ,   fs = require("fs")
+,   path = require("path")
 ,   FTPDownloader = require("../../ftp-downloader")
-,   destinationPath = __dirname + "/downloads";
+,   FTPServer = require("ftp-test-server");
 
 describe("FTPDownloader", function () {
-  before(function () {
-    sh.run("rm -rf " + destinationPath);
-    sh.run("mkdir " + destinationPath);
-  });
+  var FTPRoot = "tmp"
+  ,   destinationPath = __dirname + "/downloads";
 
-  it("Downloads the files providing strings", function (done) {
-    this.timeout(60000);
+  function getLocalPath(aPath) {
+    return path.join(__dirname, FTPRoot, aPath);
+  }
+
+  function download(files, expected, callback) {
     var ftpDownloader = new FTPDownloader({
-      connect: {
-        host: "ftp.mozilla.org",
-        port: 21
-      },
-      files: ["README", "pub/README"],
+      connect: FTPCredentials,
+      files: files,
       destinationPath: destinationPath
     });
 
     ftpDownloader.downloadFiles(function (error) {
-      if (error) return done(error);
-      expect(fs.existsSync(destinationPath + "/README")).to.be.true;
-      expect(fs.existsSync(destinationPath + "/README1")).to.be.true;
-      done();
+      if (error) return callback(error);
+      fs.readdir(destinationPath, function (error, files) {
+        expect(files).to.have.length(expected.length);
+        expected.forEach(function (file) {
+          expect(files).to.include(file);
+        });
+        callback();
+      });
     });
+  }
+
+  var FTPCredentials = {
+    host: "localhost",
+    port: 12345,
+    user: "foo",
+    pass: "bar",
+    root: getLocalPath("")
+  }
+  FTPCredentials.password = FTPCredentials.pass;
+
+  var server;
+
+  beforeEach(function (done) {
+    this.timeout(60000);
+    sh.run("mkdir -p " + getLocalPath(""));
+
+    server = new FTPServer();
+    server.init(FTPCredentials);
+    setTimeout(done, 500);
   });
 
-  //TODO: Test passing files as regular expressions. Figure out how to setup an FTP server locally.
-
-  after(function () {
+  afterEach(function (done) {
+    sh.run("rm -rf " + getLocalPath(""));
     sh.run("rm -rf " + destinationPath);
+    server.stop();
+    setTimeout(done, 10);
+  });
+
+  it("downloads the files providing strings", function (done) {
+    fs.writeFileSync(getLocalPath("README"), "test");
+    fs.mkdirSync(getLocalPath("pub"));
+    fs.writeFileSync(getLocalPath("pub/README"), "test");
+
+    download(
+      ["README", "pub/README"],
+      ["README", "README1"],
+      done);
+  });
+
+  describe("regular expressions", function () {
+    beforeEach(function () {
+      fs.writeFileSync(getLocalPath("README"), "test");
+    });
+
+    it("downloads a matched file", function (done) {
+      download([ /R\w{4}E/ ], ["README"], done);
+    });
+
+    it("downloads a matched file even when FTP has empty folders", function (done) {
+      fs.mkdirSync(getLocalPath("pub"));
+      download([ /R\w{4}E/ ], ["README"], done);
+    });
+
+    it("downloads matched files in subfolder", function (done) {
+      fs.mkdirSync(getLocalPath("pub"));
+      fs.writeFileSync(getLocalPath("pub/README"), "test");
+      download([ /R\w{4}E/ ], ["README", "README1"], done);
+    });
   });
 });
