@@ -21,6 +21,7 @@
     "execSync": "^1.0.1-pre",
     "grunt": "~0.4.4",
     "grunt-mocha-test": "^0.10.2",
-    "ftp-test-server": "git+https://github.com/alexeld/ftp-test-server.git"
+    "ftp-test-server": "git+https://github.com/alexeld/ftp-test-server.git",
+    "heapdump": "^0.2.10"
   }
 }
