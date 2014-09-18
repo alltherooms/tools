@@ -106,7 +106,7 @@ Throttler.prototype.run = function () {
       } else if (this.executed < (this.round + 1) * this.executionsPerRound && !this.nextRoundInterval) {
         this.nextRoundInterval = this.setIntervalAndExecute(function () {
           if (self._isTimeForNextRound()){
-            clearInterval(this.nextRoundInterval);
+            clearInterval(self.nextRoundInterval);
             self.nextRoundInterval = null;
             self.round++;
             self.startedAt = new Date();
