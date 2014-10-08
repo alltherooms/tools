@@ -75,10 +75,38 @@ function CSVParser (config, map) {
 
   util._extend(this.config, config);
 
-  if (this.config.wrapper) this.wrapperRegExp = new RegExp(this.config.wrapper, "g");
   if (!map) throw new Error("map cant be undefined");
 
   this.map = map;
+};
+
+CSVParser.prototype.split = function (line) {
+  var parts = []
+  ,   part = ""
+  ,   separator = this.config.separator
+  ,   wrapper = this.config.wrapper
+  ,   insideWrapper = false;
+
+  for (var i = 0, l = line.length; i < l; i++) {
+    if (insideWrapper) {
+      if (wrapper && line[i] == wrapper) {
+        insideWrapper = false;
+      } else {
+        part += line[i];
+      };
+    } else {
+      if (wrapper && line[i] == wrapper) {
+        insideWrapper = true;
+      } else if (line[i] == separator) {
+        parts.push(part);
+        part = "";
+      } else {
+        part += line[i];
+      };
+    };
+  };
+
+  return parts;
 };
 
 CSVParser.prototype.start = function() {
@@ -95,18 +123,16 @@ CSVParser.prototype.start = function() {
       self.reader.nextLine(function (line) {
         try {
           if (!fields) {
-            fields = line.split(self.config.separator);
-            for (var i = 0; i < fields.length; i++) {
+            fields = self.split(line);
+            for (var i = 0, l = fields.length; i < l; i++) {
               fields[i] = fields[i].trim();
-              if (self.wrapperRegExp) fields[i] = fields[i].replace(self.wrapperRegExp, "");
             };
             readNextLine();
           } else {
             var object = {};
-            var cols = line.split(self.config.separator);
-            for (var i = 0; i < cols.length; i++) {
+            var cols = self.split(line);
+            for (var i = 0, l = cols.length; i < l; i++) {
               cols[i] = cols[i].trim();
-              if (self.wrapperRegExp) cols[i] = cols[i].replace(self.wrapperRegExp, "");
             };
 
             function setKey (map, object, key) {

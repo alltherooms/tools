@@ -60,7 +60,7 @@ describe("CSVParser", function () {
       tested = true;
 
       expect(object.id).to.equal("102");
-      expect(object.name).to.equal("Hampshire Hotel Prinsengracht");
+      expect(object.name).to.equal("Hampshire Hotel; Prinsengracht");
       expect(object.location).to.deep.equal(["4.8945", "52.362"]);
       expect(object.rating).to.deep.equal({
         reviewScore: "3.5",
