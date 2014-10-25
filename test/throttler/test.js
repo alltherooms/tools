@@ -111,4 +111,41 @@ describe("throttler", function () {
     });
   });
 
+  describe("stop executions", function () {
+    beforeEach(function () {
+      this.throttler.concurrency = 1;
+
+      // Set defaults
+      this.throttler.executionsPerRound = null;
+      this.throttler.roundMinutes = null;
+
+      // Set fresh functions
+      this.functions = [];
+      for (var i = 0; i < 10; i++) {
+        var fn = function (done) {
+          setTimeout(done, 100);
+        };
+        spyFn = spy(fn);
+        this.functions.push(spyFn);
+        this.throttler.add(spyFn);
+      };
+    });
+
+    it("last function never called", function (done) {
+      var self = this;
+
+      this.throttler.on("error", done);
+
+      this.throttler.on("finish", function (error) {
+        expect(self.functions.pop()).to.not.have.been.called.once;
+        done();
+      });
+
+      this.throttler.run();
+
+      setTimeout(function () {
+        self.throttler.stop();
+      }, 1500); // Aprox. 5 functions will be called
+    });
+  });
 });
