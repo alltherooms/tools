@@ -130,7 +130,7 @@ Throttler.prototype.run = function () {
 };
 
 Throttler.prototype.stop = function () {
-  this.queue = [];
+  this.queue.length = 0;
 };
 
 module.exports = Throttler;

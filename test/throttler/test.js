@@ -131,13 +131,13 @@ describe("throttler", function () {
       };
     });
 
-    it("last function never called", function (done) {
+    it("doesn't call the last function", function (done) {
       var self = this;
 
       this.throttler.on("error", done);
 
       this.throttler.on("finish", function (error) {
-        expect(self.functions.pop()).to.not.have.been.called.once;
+        expect(self.functions.pop()).to.not.have.been.called;
         done();
       });
 
