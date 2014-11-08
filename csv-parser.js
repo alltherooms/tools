@@ -105,6 +105,7 @@ CSVParser.prototype.split = function (line) {
       };
     };
   };
+  parts.push(part);
 
   return parts;
 };
