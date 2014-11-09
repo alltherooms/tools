@@ -70,7 +70,8 @@ function CSVParser (config, map) {
     encoding: "utf8",
     lineTerminator: "\n",
     separator: ",",
-    wrapper: null
+    wrapper: null,
+    escapeChar: "\\"
   };
 
   util._extend(this.config, config);
@@ -85,6 +86,7 @@ CSVParser.prototype.split = function (line) {
   ,   part = ""
   ,   separator = this.config.separator
   ,   wrapper = this.config.wrapper
+  ,   escapeChar = this.config.escapeChar
   ,   insideWrapper = false;
 
   for (var i = 0, l = line.length; i < l; i++) {
@@ -92,6 +94,7 @@ CSVParser.prototype.split = function (line) {
       if (wrapper && line[i] == wrapper) {
         insideWrapper = false;
       } else {
+        if (line[i] == escapeChar) i++;
         part += line[i];
       };
     } else {
