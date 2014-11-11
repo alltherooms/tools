@@ -6,6 +6,7 @@ usage:
     lineTerminator: String //Default "\n"
     separator: String //Default: "," //Indicates the character that separates the values
     wrapper: String //Default: null //Indicates the character that wraps the values
+    escapeChar: String //Default: null //Indicates the escape character for values inside the wrapper. e.g: "This is a wrapped value with \"escaped quoutes\""
   }
   var map = {
     key: String/RegExp/Function
