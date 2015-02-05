@@ -38,8 +38,12 @@ function HTTPDownloader (options) {
 HTTPDownloader.prototype.downloadFiles = function (callback) {
   var options = this.options;
   var wgetOptions = [
-    " -r -np -nd -q",
-    " -A " + options.files,
+    " -r", // recursive
+    " -np", // don't ascend to parent directories
+    " -nd", // save all files in a single directory
+    " -e robots=off", // ignore robots.txt
+    " -q", // quiet
+    " -A " + options.files, // acceptance files list
     " --http-user=" + options.connect.user,
     " --http-password=" + options.connect.password,
     " -P " + options.destinationPath
@@ -49,7 +53,7 @@ HTTPDownloader.prototype.downloadFiles = function (callback) {
   proc.on('close', function (code, signal) {
     switch (code) {
       case 0:
-      case 8: // 404 errors
+      case 8: // 403, 404 errors
         callback();
         break;
       default:
