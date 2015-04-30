@@ -5,7 +5,7 @@
   },
   "name": "tools",
   "description": "Useful set of tools to use in application development",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "repository": {
     "type": "git",
     "url": "git://github.com/alltherooms/tools.git"
