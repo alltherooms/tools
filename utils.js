@@ -24,5 +24,20 @@ module.exports = {
       if (error) return done(error);
       self.forEachAsync(array, each, done);
     });
+  },
+
+  /*
+  * Escape special characters from a string in order to prepare it
+  * for a regular expression.
+  *
+  * @param {String} - string
+  *
+  * Usage:
+  *   new RegExp(escapeRegExp(userInput))
+  *
+  * See http://stackoverflow.com/a/6969486/638425
+  */
+  escapeRegExp: function (string) {
+    return string.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
   }
 };
