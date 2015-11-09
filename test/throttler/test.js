@@ -148,4 +148,118 @@ describe("throttler", function () {
       }, 1500); // Aprox. 5 functions will be called
     });
   });
+
+  describe('lately-added functions', function () {
+    before(function () {
+      this.clock = sinon.useFakeTimers();
+    });
+
+    after(function () {
+      this.clock.restore();
+    });
+
+    beforeEach(function () {
+      // drain the queue
+      this.throttler.stop();
+      // Set fresh functions
+      this.functions = [];
+    });
+
+    it('calls a late function and finishes twice', function (done) {
+      var finishedTimes = 0;
+      var spyFn;
+
+      // Set defaults
+      this.throttler.concurrency = 1;
+      this.throttler.executionsPerRound = null;
+      this.throttler.roundMinutes = null;
+
+      this.throttler.on('finish', function () {
+        finishedTimes++;
+      });
+
+      // set initial function
+      spyFn = spy(function (done) {
+        setTimeout(done, 100);
+      });
+      this.functions.push(spyFn);
+      this.throttler.add(spyFn);
+
+      this.throttler.run();
+
+      this.clock.tick(110);
+
+      expect(finishedTimes).to.eq(1);
+      expect(this.functions[0]).to.have.been.called.once;
+
+      // add late function
+      spyFn = spy(function (done) {
+        setTimeout(done, 100);
+      });
+      this.functions.push(spyFn);
+      this.throttler.add(spyFn);
+
+      // run again
+      this.throttler.run();
+
+      this.clock.tick(110);
+
+      expect(finishedTimes).to.eq(2);
+      expect(this.functions[1]).to.have.been.called.once;
+
+      done();
+    });
+
+    it('calls late functions that saturate the setup in the next round', function (done) {
+      var finishedTimes = 0;
+      var spyFn;
+
+      // Set defaults
+      this.throttler.concurrency = 1;
+      this.throttler.executionsPerRound = 1;
+      this.throttler.roundMinutes = 1/60;
+
+      this.throttler.on('finish', function () {
+        finishedTimes++;
+      });
+
+      // set initial function
+      spyFn = spy(function (done) {
+        setTimeout(done, 100);
+      });
+      this.functions.push(spyFn);
+      this.throttler.add(spyFn);
+
+      this.throttler.run();
+
+      this.clock.tick(110);
+
+      expect(finishedTimes).to.eq(1);
+      expect(this.functions[0]).to.have.been.called.once;
+
+      // add late functions
+      for (var i = 0; i < 2; i++) {
+        spyFn = spy(function (done) {
+          setTimeout(done, 100);
+        });
+        this.functions.push(spyFn);
+        this.throttler.add(spyFn);
+      }
+
+      // run again
+      this.throttler.run();
+
+      this.clock.tick(1000);
+
+      expect(this.functions[1]).to.have.been.called.once;
+
+      // after a next round...
+      this.clock.tick(1110);
+
+      expect(finishedTimes).to.eq(2);
+      expect(this.functions[2]).to.have.been.called.once;
+
+      done();
+    });
+  });
 });
