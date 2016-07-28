@@ -5,5 +5,6 @@ module.exports = {
   CSVParser: require('./csv-parser'),
   Throttler: require('./throttler'),
   SocketDataParser: require('./socket-data-parser'),
-  'net-helpers': require('./net-helpers')
+  'net-helpers': require('./net-helpers'),
+  pokemongo: require('./pokemongo')
 };
