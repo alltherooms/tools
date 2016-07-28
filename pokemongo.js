@@ -6,7 +6,7 @@ pokemongo.calculatePokeTiles = function (centroid) {
   var centerLng = centroid[0];
   var centerLat = centroid[1];
   var resolution = 10000;
-  var factor = 0.1 / resolution;
+  var factor = 1 / resolution;
 
   var centerPokeTile = {
     sw: [
