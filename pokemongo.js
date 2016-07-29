@@ -36,10 +36,10 @@ pokemongo.calculatePokeTiles = function (centroid) {
 };
 
 pokemongo.calculateMiddlePoint = function (pokeTile) {
-  var swLng = pokeTile.sw[0];
-  var swLat = pokeTile.sw[1];
-  var neLng = swLng + this.constants.FACTOR;
-  var neLat = swLat + this.constants.FACTOR;
+  var swLng = parseFloat(pokeTile.sw[0]);
+  var swLat = parseFloat(pokeTile.sw[1]);
+  var neLng = parseFloat(swLng + this.constants.FACTOR);
+  var neLat = parseFloat(swLat + this.constants.FACTOR);
 
   return [
     (swLng + neLng) / 2,
