@@ -30,6 +30,13 @@ describe("geo", function () {
     });
   });
 
+  describe("#getCentroidFromMultiPoint", function () {
+    it("returns the centroid of the given multipoint", function () {
+      expect(geo.getCentroidFromMultiPoint([[-1, 0], [-1, 2], [-1, 3], [-1, 4], [-1, 7], [0, 1], [0, 3], [1, 1], [2, 0], [6, 0], [7, 8], [9, 8], [10, 6]]))
+        .to.deep.equal([2.3076923076923075, 3.3076923076923075]);
+    });
+  });
+
   describe("#getLatLngBounds", function () {
     it("returns the latitude longitude bounds, given a point and it's distance in miles to any corner", function () {
       latLngBounds = geo.getLatLngBounds([-73.9780035, 40.7056308], 10);

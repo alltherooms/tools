@@ -25,6 +25,22 @@ module.exports = {
     return [(A[0] + B[0]) / 2, (A[1] + B[1]) / 2];
   },
 
+  //Given an array [], with the following format [[x1, y1], [x2, y2]], returns the centroid of the multipoint.
+  getCentroidFromMultiPoint: function (multiPoint) {
+    var sumX = 0;
+    var sumY = 0;
+    var centroid = [];
+    for (var i = 0; i < multiPoint.length; i++) {
+      var point = multiPoint[i];
+      sumX += parseFloat(point[0]);
+      sumY += parseFloat(point[1]);
+      centroid[0] = sumX / multiPoint.length;
+      centroid[1] = sumY / multiPoint.length;
+    }
+
+    return centroid;
+  },
+
   /*
   Given a pair of coordiantes `geoPoint` with the format [lng, lat] and a distance in miles to any corner,
   returns an object in the following format:
