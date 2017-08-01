@@ -38,6 +38,7 @@ module.exports = {
    * See http://stackoverflow.com/a/6969486/638425
    */
   escapeRegExp: function(string) {
+    if (!string) return '';
     return string.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
   },
 
