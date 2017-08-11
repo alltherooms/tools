@@ -58,14 +58,14 @@ usage:
 
 module.exports = CSVParser;
 
-var EventEmitter = require("events").EventEmitter
-,   lineReader = require("line-reader")
-,   fs = require("fs")
-,   util = require("util");
+var EventEmitter = require("events").EventEmitter;
+var lineReader = require("line-reader");
+var fs = require("fs");
+var util = require("util");
 
 util.inherits(CSVParser, EventEmitter);
 
-function CSVParser (config, map) {
+function CSVParser(config, map) {
   this.config = {
     sourceFilePath: "",
     encoding: "utf8",
@@ -82,13 +82,15 @@ function CSVParser (config, map) {
   this.map = map;
 };
 
-CSVParser.prototype.split = function (line) {
-  var parts = []
-  ,   part = ""
-  ,   separator = this.config.separator
-  ,   wrapper = this.config.wrapper
-  ,   escapeChar = this.config.escapeChar
-  ,   insideWrapper = false;
+CSVParser.prototype.split = function(line) {
+  var parts = [];
+  var part = "";
+  var separator = this.config.separator;
+  var wrapper = this.config.wrapper;
+  var escapeChar = this.config.escapeChar;
+  var insideWrapper = false;
+
+  line = line.replace(/\\""|\\''/g, "");
 
   for (var i = 0, l = line.length; i < l; i++) {
     if (insideWrapper) {
@@ -119,13 +121,13 @@ CSVParser.prototype.start = function() {
   if (!fs.existsSync(this.config.sourceFilePath))
     return this.emit("error", new Error("Unable to open file: " + this.config.sourceFilePath + ". It doesn't exist."))
 
-  function handleFileOpen (reader) {
+  function handleFileOpen(reader) {
     self.reader = reader;
     var fields = null;
 
-    function readNextLine () {
+    function readNextLine() {
       if (!self.reader.hasNextLine()) return self.end();
-      self.reader.nextLine(function (line) {
+      self.reader.nextLine(function(line) {
         try {
           if (!fields) {
             fields = self.split(line);
@@ -140,7 +142,7 @@ CSVParser.prototype.start = function() {
               cols[i] = cols[i].trim();
             };
 
-            function setKey (map, object, key) {
+            function setKey(map, object, key) {
               var matcher = map[key];
               var _field = null;
 
@@ -171,7 +173,7 @@ CSVParser.prototype.start = function() {
               setKey(self.map, object, keys[i]);
             };
 
-            self.emit("object", object, function (error){
+            self.emit("object", object, function(error) {
               if (error) return self.end(error);
               readNextLine();
             });
