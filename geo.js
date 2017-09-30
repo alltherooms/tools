@@ -6,6 +6,7 @@ module.exports = {
 
   //Given a pair of coordiantes A and B with the format [lng, lat], returns the distance in miles beetween A and B.
   getDistanceInMiles: function (A, B) {
+    if (!A || !B || A.length !== 2 || B.length !== 2) return -1;
     var r = 3963.1676 //Earth radius in miles
     var dLat = this.degreesToRadians(B[1]-A[1]);
     var dLng = this.degreesToRadians(B[0]-A[0]);
