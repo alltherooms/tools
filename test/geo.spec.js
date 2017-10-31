@@ -1,4 +1,4 @@
-var geo = require("../../geo");
+var geo = require("../geo");
 
 describe("geo", function () {
 
@@ -20,7 +20,7 @@ describe("geo", function () {
     it("calculates the distance in miles of the given A and B arguments", function () {
       var A = [-73.9780035, 40.7056308]
       ,   B = [-75.57513699999998, 6.235925];
-      expect(geo.getDistanceInMiles(A, B)).to.equal(2386.3299554467803);
+      expect(geo.getDistanceInMiles(A, B)).to.closeTo(2386.3299554, 0.0000001);
     });
   });
 

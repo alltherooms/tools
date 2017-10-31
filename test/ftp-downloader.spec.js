@@ -4,10 +4,10 @@
  FTPDownloader test
  */
 
-var sh = require('execSync');
+var execSync = require('child_process').execSync;
 var fs = require('fs');
 var path = require('path');
-var FTPDownloader = require('../../ftp-downloader');
+var FTPDownloader = require('../ftp-downloader');
 var FTPServer = require('ftp-test-server');
 
 describe('FTPDownloader', function () {
@@ -51,7 +51,7 @@ describe('FTPDownloader', function () {
 
   beforeEach(function (done) {
     this.timeout(60000);
-    sh.run('mkdir -p ' + getLocalPath(''));
+    execSync('mkdir -p ' + getLocalPath(''));
 
     server = new FTPServer();
     server.init(FTPCredentials);
@@ -59,8 +59,8 @@ describe('FTPDownloader', function () {
   });
 
   afterEach(function (done) {
-    sh.run('rm -rf ' + getLocalPath(''));
-    sh.run('rm -rf ' + destinationPath);
+    execSync('rm -rf ' + getLocalPath(''));
+    execSync('rm -rf ' + destinationPath);
     server.stop();
     setTimeout(done, 10);
   });

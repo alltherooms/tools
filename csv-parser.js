@@ -60,7 +60,6 @@ module.exports = CSVParser;
 
 var EventEmitter = require("events").EventEmitter;
 var lineReader = require("line-reader");
-var fs = require("fs");
 var util = require("util");
 
 util.inherits(CSVParser, EventEmitter);
@@ -118,16 +117,18 @@ CSVParser.prototype.split = function(line) {
 
 CSVParser.prototype.start = function() {
   var self = this;
-  if (!fs.existsSync(this.config.sourceFilePath))
-    return this.emit("error", new Error("Unable to open file: " + this.config.sourceFilePath + ". It doesn't exist."))
 
-  function handleFileOpen(reader) {
+  function handleFileOpen(error, reader) {
+    if (error) {
+      return this.emit("error", new Error("Unable to open file: " + this.config.sourceFilePath + ". It doesn't exist."))
+    }
+
     self.reader = reader;
     var fields = null;
 
     function readNextLine() {
       if (!self.reader.hasNextLine()) return self.end();
-      self.reader.nextLine(function(line) {
+      self.reader.nextLine(function(error, line) {
         try {
           if (!fields) {
             fields = self.split(line);
@@ -179,18 +180,35 @@ CSVParser.prototype.start = function() {
             });
           };
         } catch (e) {
-          self.reader.close();
-          self.emit("error", e);
+          self.end(e);
         };
       });
     };
     readNextLine();
   };
 
-  lineReader.open(this.config.sourceFilePath, handleFileOpen, this.config.lineTerminator, this.config.encoding);
+  const options = {
+    separator: this.config.lineTerminator,
+    encoding: this.config.encoding
+  };
+
+  lineReader.open(this.config.sourceFilePath, options, handleFileOpen);
 };
 
 CSVParser.prototype.end = function(error) {
-  if (this.reader) this.reader.close();
-  this.emit("end", error);
+  const handler = (readerError) => {
+    error = error || readerError;
+
+    if (error) {
+      this.emit('error', error);
+    } else {
+      this.emit('end');
+    }
+  };
+
+  if (this.reader) {
+    this.reader.close(handler);
+  } else {
+    handler(error);
+  }
 };

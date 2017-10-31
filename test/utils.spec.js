@@ -1,6 +1,6 @@
 'use strict';
 
-var utils = require('../../utils');
+var utils = require('../utils');
 
 describe('Utils', function() {
   it('#tryParseJSON returns false when is a string', function() {
