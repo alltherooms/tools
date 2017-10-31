@@ -93,6 +93,20 @@ describe("geo", function () {
         [-74.08031963097766, 40.7056308]
       ]]);
     });
+
+    it('throws if no correct parameters are provided', function () {
+      const sw = [-74.08031963097766, 40.60331466902235];
+      const ne = [-73.87568736902234, 40.80794693097765];
+      const fn = (sw, ne, bdx, bdy) => {
+        return geo.getGridBoxes.bind(geo, sw, ne, bdx, bdy);
+      };
+
+      expect(fn(null, null, 0.1, 0.1)).to.throw('Incorrect numeric sw/ne coordinates');
+      expect(fn([], ne, 0.1, 0.1)).to.throw('Incorrect numeric sw/ne coordinates');
+      expect(fn(sw, ['hi', 1.1], 0.1, 0.1)).to.throw('Incorrect numeric sw/ne coordinates');
+      expect(fn(sw, ne, null, null)).to.throw('Incorrect numeric box distances');
+      expect(fn(sw, ne, 0.1, null)).to.throw('Incorrect numeric box distances');
+    });
   });
 
   describe("#getBox", function () {

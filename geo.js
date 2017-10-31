@@ -1,3 +1,17 @@
+function numbersIn (array) {
+  let numbers = 0;
+
+  if (!array) return numbers;
+
+  array.forEach((e) => {
+    if (!isNaN(parseFloat(e)) && isFinite(e)) {
+      numbers++;
+    }
+  });
+
+  return numbers;
+}
+
 module.exports = {
   //converts the given `degress` and returns the value in radians
   degreesToRadians: function (degrees) {
@@ -121,6 +135,14 @@ module.exports = {
     bdy -> Float. Grid box distance in y axis to wrapper box
   */
   getGridBoxes: function (sw, ne, bdx, bdy) {
+    if (numbersIn(sw) != 2 || numbersIn(ne) != 2) {
+      throw new Error(`Incorrect numeric sw/ne coordinates. sw: ${sw}, ne: ${ne}`);
+    }
+
+    if (numbersIn([bdx, bdy]) != 2) {
+      throw new Error(`Incorrect numeric box distances. bdx: ${bdx}, bdy: ${bdy}`);
+    }
+
     var dx = ne[0] - sw[0]; //Distance in x axis
     var dy = ne[1] - sw[1]; //Distance in y axis
 
@@ -131,10 +153,10 @@ module.exports = {
     var bdy = dy / rows;
 
     var gridBoxes = [];
-    for(var c = 1; c <= cols; c++){
+    for (var c = 1; c <= cols; c++) {
       var neLng = seLng = sw[0] + (bdx * c);
       var swLng = nwLng = neLng - bdx;
-      for(var r = 1; r <= rows; r++){
+      for (var r = 1; r <= rows; r++) {
         neLat = nwLat = sw[1] + (bdy * r);
         swLat = seLat = neLat - bdy;
         gridBoxes.push([[[nwLng, nwLat], [neLng, neLat], [seLng, seLat], [swLng, swLat], [nwLng, nwLat]]]);
