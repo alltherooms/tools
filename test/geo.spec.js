@@ -24,6 +24,14 @@ describe("geo", function () {
     });
   });
 
+  describe("#getDistanceInKms", function () {
+    it("calculates the distance in kms of the given A and B arguments", function () {
+      var A = [-73.9780035, 40.7056308]
+      ,   B = [-75.57513699999998, 6.235925];
+      expect(geo.getDistanceInKms(A, B)).to.closeTo(3840.44807568, 0.0000001);
+    });
+  });
+
   describe("#getSegmentMiddlePoint", function () {
     it("returns the middle point of the given segment A-B", function () {
       expect(geo.getSegmentMiddlePoint([0, 1], [10, 20])).to.deep.equal([5, 10.5]);

@@ -18,10 +18,12 @@ module.exports = {
     return degrees * (Math.PI / 180);
   },
 
-  //Given a pair of coordiantes A and B with the format [lng, lat], returns the distance in miles beetween A and B.
-  getDistanceInMiles: function (A, B) {
+  //Given a pair of coordiantes A and B with the format [lng, lat] and a unit, returns the distance beetween A and B.
+  getDistance: function (A, B, unit) {
     if (!A || !B || A.length !== 2 || B.length !== 2) return -1;
-    var r = 3963.1676 //Earth radius in miles
+    if (unit != 'kms' && unit != 'miles') return -1;
+
+    var r = unit === 'kms' ? 6378.1370 : 3963.1676; // Earth radius
     var dLat = this.degreesToRadians(B[1]-A[1]);
     var dLng = this.degreesToRadians(B[0]-A[0]);
     var a =
@@ -30,9 +32,19 @@ module.exports = {
       Math.sin(dLng / 2) * Math.sin(dLng / 2);
 
     var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    var d = r * c; //Distance in miles
+    var d = r * c;
 
     return d;
+  },
+
+  //Given a pair of coordiantes A and B with the format [lng, lat], returns the distance in miles beetween A and B.
+  getDistanceInMiles: function (A, B) {
+    return this.getDistance(A, B, 'miles');
+  },
+
+  //Given a pair of coordiantes A and B with the format [lng, lat], returns the distance in miles beetween A and B.
+  getDistanceInKms: function (A, B) {
+    return this.getDistance(A, B, 'kms');
   },
 
   //Given a segmet A-B, with the following format [x1, y1]-[x2, y2], returns the middle point of the segment.
