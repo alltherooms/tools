@@ -6,6 +6,11 @@ var EventEmiter = require('events').EventEmitter;
 util.inherits(ThrottledStream, EventEmiter);
 
 function ThrottledStream (readStream, options) {
+  console.log(
+    'WARNING: ThrottledStream#read is recursive and will cause high CPU usage for slow queries. ' +
+    'Do not use. Pipe to a native stream instead'
+  );
+
   EventEmiter.call(this);
 
   if (!readStream) {
