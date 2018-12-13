@@ -6,11 +6,6 @@ var EventEmiter = require('events').EventEmitter;
 util.inherits(ThrottledStream, EventEmiter);
 
 function ThrottledStream (readStream, options) {
-  console.log(
-    'WARNING: ThrottledStream#read is recursive and will cause high CPU usage for slow queries. ' +
-    'Do not use. Pipe to a native stream instead'
-  );
-
   EventEmiter.call(this);
 
   if (!readStream) {
@@ -21,6 +16,7 @@ function ThrottledStream (readStream, options) {
 
   this.readStream = readStream;
   this.concurrency = options.concurrency || 1;
+  this.readDelayMilliseconds = options.readDelayMilliseconds || 100;
 }
 
 ThrottledStream.prototype.init = function () {
@@ -69,7 +65,7 @@ ThrottledStream.prototype.read = function (size) {
       this.readStream.resume();
     }
 
-    setImmediate(this.read.bind(this, size));
+    setTimeout(this.read.bind(this, size), this.readDelayMilliseconds);
   }
 };
 
